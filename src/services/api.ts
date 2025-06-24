@@ -1,13 +1,15 @@
 import { SummaryData } from '../types';
 
-const API_BASE_URL = 'https://api.personalassistant.com/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 export const fetchDailySummary = async (): Promise<SummaryData> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/daily-summary`);
+    const response = await fetch(`${API_BASE_URL}/run_daily_summary`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    localStorage.removeItem('daily_summary');
     const data = await response.json();
     localStorage.setItem('daily_summary', JSON.stringify(data));
     return data;
