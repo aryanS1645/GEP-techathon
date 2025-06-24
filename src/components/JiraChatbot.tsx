@@ -108,27 +108,7 @@ const JiraChatbot: React.FC = () => {
               }
             `}
           >
-            <Plus size={14} />
-            Create
-          </button>
-          <button
-            onClick={() => setMode('summarize')}
-            className={`
-              flex items-center gap-1 px-3 py-1 rounded text-sm font-medium transition-colors
-              ${mode === 'summarize'
-                ? isDark ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white'
-                : isDark ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
-              }
-            `}
-          >
-            <FileText size={14} />
-            Summarize
-          </button>
-          <button
-            onClick={clearChat}
-            className={`p-1 rounded ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-gray-100 text-gray-500'} transition-colors`}
-            title="Clear Chat"
-          >
+
             <Trash2 size={16} />
           </button>
         </div>
