@@ -34,7 +34,7 @@ const WelcomeCard: React.FC = () => {
 
       <div className={`${isDark ? 'text-gray-200' : 'text-gray-700'} space-y-6`}>
         <p className="text-lg">
-          <span className="font-semibold text-blue-500">Boost your productivity</span> by consolidating your <span className="font-semibold">emails</span>, <span className="font-semibold">calendar</span>, <span className="font-semibold">Teams</span> messages, and <span className="font-semibold">Jira</span> tickets into one beautiful dashboard.
+          <span className="font-semibold text-blue-500">Boost your productivity</span> by consolidating your <span className="font-semibold">emails</span>, <span className="font-semibold">calendar</span>, <span className="font-semibold">Slack</span> messages, and <span className="font-semibold">Jira</span> tickets into one beautiful dashboard.
         </p>
 
         <div>
@@ -53,11 +53,11 @@ const WelcomeCard: React.FC = () => {
             </li>
             <li className="flex items-center gap-2">
               <MessageSquare size={18} className="text-indigo-400" />
-              <span><strong>Teams Summary:</strong> Key conversations</span>
+              <span><strong>Slack Summary:</strong> Key conversations</span>
             </li>
             <li className="flex items-center gap-2">
               <FileText size={18} className="text-yellow-400" />
-              <span><strong>Jira Chatbot:</strong> Interactive ticket help</span>
+              <span><strong>Agents:</strong> Assistant Chatbots</span>
             </li>
             <li className="flex items-center gap-2">
               <CheckCircle size={18} className="text-green-400" />

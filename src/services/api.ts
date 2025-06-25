@@ -62,6 +62,82 @@ export const sendJiraChatMessage = async (message: string, chatHistory: any[]): 
   }
 };
 
+export const sendCalendarChatMessage = async (message: string, chatHistory: any[]): Promise<string> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/calendar/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "query": `${message}`,
+        "thread_id": "1233"
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.response;
+  } catch (error) {
+    console.error('Error sending chat message:', error);
+    return "I'm currently unable to process your request. Please try again later.";
+  }
+};
+
+export const sendGmailChatMessage = async (message: string, chatHistory: any[]): Promise<string> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/gmail/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "query": `${message}`,
+        "thread_id": "1232"
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.response;
+  } catch (error) {
+    console.error('Error sending chat message:', error);
+    return "I'm currently unable to process your request. Please try again later.";
+  }
+};
+
+export const sendSlackChatMessage = async (message: string, chatHistory: any[]): Promise<string> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/slack/query`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "query": `${message}`,
+        "thread_id": "1231"
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.response;
+  } catch (error) {
+    console.error('Error sending chat message:', error);
+    return "I'm currently unable to process your request. Please try again later.";
+  }
+};
+
+
 export const createJiraTicket = async (ticketData: any): Promise<string> => {
   try {
     const response = await fetch(`${API_BASE_URL}/jira/create-ticket`, {

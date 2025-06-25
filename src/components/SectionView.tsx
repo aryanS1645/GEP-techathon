@@ -6,6 +6,10 @@ import ScheduleSelector from './ScheduleSelector';
 import SummaryCard from './SummaryCard';
 import JiraChatbot from './JiraChatbot';
 import WelcomeCard from './WelcomeCard';
+import CalendarChatbot from './CalendarChatbot';
+import EmailChatbot from './EmailChatbot';
+import TodoList from './TodoList';
+import SlackChatbot from './SlackChatbot';
 
 interface SectionViewProps {
   section: string;
@@ -16,7 +20,7 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(false);
   const [scheduledTime, setScheduledTime] = useState<Date | null>(null);
-
+  
   useEffect(() => {
     if (section === 'home') {
       loadSummaryData();
@@ -47,7 +51,7 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
     switch (section) {
       case 'email': return 'Email Summary';
       case 'calendar': return 'Calendar Summary';
-      case 'teams': return 'Teams Summary';
+      case 'teams': return 'Slack Summary';
       case 'jira': return 'Jira Assistant';
       case 'todo': return 'Todo List';
       default: return 'Dashboard';
@@ -73,7 +77,7 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
   let data: {
     email_summary?: string;
     calendar_summary?: string;
-    teams_summary?: string;
+    slack_summary?: string;
     final_summary?: string;
   };
 
@@ -90,7 +94,7 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
     case 'calendar':
       return data.calendar_summary || '';
     case 'teams':
-      return data.teams_summary || '';
+      return data.slack_summary || '';
     case 'todo':
       return data.final_summary || '';
     default:
@@ -106,6 +110,37 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
   if (section === 'jira') {
     return <JiraChatbot />;
   }
+
+  if (section === 'calendarbot') {
+  return <CalendarChatbot />;
+}
+if (section === 'emailbot') {
+  return <EmailChatbot />;
+}
+if (section === 'slackbot') {
+  return <SlackChatbot />;
+}
+
+if (section === 'todo') {
+  let todoItems: any[] = [];
+  const storedData = localStorage.getItem('daily_summary');
+  if (storedData) {
+    try {
+      const parsed = JSON.parse(storedData);
+      // Check for nested todo_list.todo_list
+      if (
+        parsed.todo_list &&
+        Array.isArray(parsed.todo_list.todo_list)
+      ) {
+        todoItems = parsed.todo_list.todo_list;
+        console.log("Todo items:", todoItems);
+      }
+    } catch (err) {
+      console.error("Failed to parse daily_summary from localStorage:", err);
+    }
+  }
+  return <TodoList items={todoItems} />;
+}
 
   return (
     <div>

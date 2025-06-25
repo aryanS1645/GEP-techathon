@@ -1,19 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Trash2, Sparkles, ChevronDown } from 'lucide-react'; 
-import { sendJiraChatMessage, summarizeJiraTicket } from '../services/api';
+import { Send, Bot, User, Trash2, Sparkles } from 'lucide-react'; 
 import { ChatMessage } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
+import { sendSlackChatMessage } from '../services/api';
 
-const Agents: React.FC = () => {
+const SlackChatbot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<'chat' | 'create' | 'summarize'>('chat');
-  const [ticketId, setTicketId] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { isDark } = useTheme();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState('jira'); // default to Jira Chatbot
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -25,8 +21,6 @@ const Agents: React.FC = () => {
 
   const clearChat = () => {
     setMessages([]);
-    setMode('chat');
-    setTicketId('');
   };
 
   const handleSendMessage = async () => {
@@ -44,13 +38,7 @@ const Agents: React.FC = () => {
     setLoading(true);
 
     try {
-      let botResponse = '';
-      
-      if (mode === 'summarize' && ticketId) {
-        botResponse = await summarizeJiraTicket(ticketId);
-      } else {
-        botResponse = await sendJiraChatMessage(inputMessage, messages);
-      }
+      const botResponse = await sendSlackChatMessage(inputMessage, messages);
 
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -100,24 +88,17 @@ const Agents: React.FC = () => {
 
       {/* Header */}
       <div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-blue-200'} flex items-center justify-between bg-transparent`}>
-       
-<div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-blue-200'} flex items-center justify-between bg-transparent`}>
         <h2 className={`text-2xl font-extrabold flex items-center gap-2 ${isDark ? 'text-white' : 'text-blue-900'}`}>
           <Bot size={24} className="text-blue-500" />
-          Jira Chatbot
+          Slack Chatbot
         </h2>
-  <div className="flex gap-2">
-  </div>
-</div>
-        <div className="flex gap-2">
-          <button
-            onClick={clearChat}
-            className={`p-2 rounded-full ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-blue-100 text-blue-500'} transition-colors`}
-            title="Clear Chat"
-          >
-            <Trash2 size={18} />
-          </button>
-        </div>
+        <button
+          onClick={clearChat}
+          className={`p-2 rounded-full ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-blue-100 text-blue-500'} transition-colors`}
+          title="Clear Chat"
+        >
+          <Trash2 size={18} />
+        </button>
       </div>
 
       {/* Messages */}
@@ -125,7 +106,7 @@ const Agents: React.FC = () => {
         {messages.length === 0 && (
           <div className={`text-center ${isDark ? 'text-gray-400' : 'text-blue-600'} text-lg font-medium`}>
             <Sparkles size={20} className="inline mr-2 animate-pulse text-blue-400" />
-            Ask me anything about your Jira tickets...
+            Ask me anything about your Slack workspace...
           </div>
         )}
 
@@ -188,7 +169,7 @@ const Agents: React.FC = () => {
         <div className="flex gap-3">
           <input
             type="text"
-            placeholder="Ask me about Jira tickets..."
+            placeholder="Ask me about your Slack workspace..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -217,4 +198,4 @@ const Agents: React.FC = () => {
   );
 };
 
-export default Agents;
+export default SlackChatbot;
