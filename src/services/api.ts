@@ -176,7 +176,7 @@ export const summarizeJiraTicket = async (ticketId: string): Promise<string> => 
 export const fetchDailySummary = async (): Promise<any> => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   try {
-    const response = await fetch(`${API_BASE_URL}/api/summary/daily`);
+    const response = await fetch(`${API_BASE_URL}/run_daily_summary`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
