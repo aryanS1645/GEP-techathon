@@ -3,7 +3,8 @@ import { Send, Bot, User, Trash2, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { sendUnifiedAgentChatMessage } from '../services/api'; // Adjust this import based on your API service
- 
+import ReactMarkdown from 'react-markdown';
+
 const AgentChatbot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -135,7 +136,8 @@ const AgentChatbot: React.FC = () => {
                 }
               `}
             >
-              <p className="text-base whitespace-pre-wrap">{message.content}</p>
+<ReactMarkdown className="text-base whitespace-pre-wrap">{message.content}</ReactMarkdown>
+ 
             </div>
  
             {message.sender === 'user' && (
