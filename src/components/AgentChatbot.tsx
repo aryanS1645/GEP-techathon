@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Trash2, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
+import { sendUnifiedAgentChatMessage } from '../services/api'; // Adjust this import based on your API service
  
 const AgentChatbot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -36,9 +37,10 @@ const AgentChatbot: React.FC = () => {
     setInputMessage('');
     setLoading(true);
  
-    try {
-      // Replace this with your unified agent API call if needed
-      const botResponse = "This is a unified agent response. (Integrate your backend here)";
+ try {
+      // Call the unified agent API here
+      const botResponse = await sendUnifiedAgentChatMessage(inputMessage, messages);
+
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         content: botResponse,
