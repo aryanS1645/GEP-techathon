@@ -49,9 +49,9 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
 
   const getSectionTitle = () => {
     switch (section) {
-      case 'email': return 'Email Summary';
-      case 'calendar': return 'Calendar Summary';
-      case 'teams': return 'Slack Summary';
+      case 'email': return '';
+      case 'calendar': return '';
+      case 'teams': return '';
       case 'jira': return 'Jira Assistant';
       case 'todo': return 'Todo List';
       default: return 'Dashboard';
