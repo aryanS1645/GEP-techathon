@@ -1,66 +1,50 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Trash2, Sparkles, ChevronDown } from 'lucide-react'; 
-import { sendJiraChatMessage, summarizeJiraTicket } from '../services/api';
+import { Send, Bot, User, Trash2, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
-import ReactMarkdown from 'react-markdown';
-
-
-const Agents: React.FC = () => {
+ 
+const AgentChatbot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<'chat' | 'create' | 'summarize'>('chat');
-  const [ticketId, setTicketId] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { isDark } = useTheme();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState('jira'); // default to Jira Chatbot
-
+ 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
+ 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
+ 
   const clearChat = () => {
     setMessages([]);
-    setMode('chat');
-    setTicketId('');
   };
-
+ 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
-
+ 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       content: inputMessage,
       sender: 'user',
       timestamp: new Date(),
     };
-
+ 
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setLoading(true);
-
+ 
     try {
-      let botResponse = '';
-      
-      if (mode === 'summarize' && ticketId) {
-        botResponse = await summarizeJiraTicket(ticketId);
-      } else {
-        botResponse = await sendJiraChatMessage(inputMessage, messages);
-      }
-
+      // Replace this with your unified agent API call if needed
+      const botResponse = "This is a unified agent response. (Integrate your backend here)";
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         content: botResponse,
         sender: 'bot',
         timestamp: new Date(),
       };
-
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       const errorMessage: ChatMessage = {
@@ -74,14 +58,14 @@ const Agents: React.FC = () => {
       setLoading(false);
     }
   };
-
+ 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
-
+ 
   return (
     <div
       className={`
@@ -99,38 +83,31 @@ const Agents: React.FC = () => {
         size={28}
         className="absolute top-8 right-8 text-yellow-400 opacity-10 animate-spin-slow pointer-events-none"
       />
-
+ 
       {/* Header */}
       <div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-blue-200'} flex items-center justify-between bg-transparent`}>
-       
-<div className={`p-4 border-b ${isDark ? 'border-gray-700' : 'border-blue-200'} flex items-center justify-between bg-transparent`}>
         <h2 className={`text-2xl font-extrabold flex items-center gap-2 ${isDark ? 'text-white' : 'text-blue-900'}`}>
           <Bot size={24} className="text-blue-500" />
-          Jira Chatbot
+          Agent
         </h2>
-  <div className="flex gap-2">
-  </div>
-</div>
-        <div className="flex gap-2">
-          <button
-            onClick={clearChat}
-            className={`p-2 rounded-full ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-blue-100 text-blue-500'} transition-colors`}
-            title="Clear Chat"
-          >
-            <Trash2 size={18} />
-          </button>
-        </div>
+        <button
+          onClick={clearChat}
+          className={`p-2 rounded-full ${isDark ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-blue-100 text-blue-500'} transition-colors`}
+          title="Clear Chat"
+        >
+          <Trash2 size={18} />
+        </button>
       </div>
-
+ 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-5">
         {messages.length === 0 && (
           <div className={`text-center ${isDark ? 'text-gray-400' : 'text-blue-600'} text-lg font-medium`}>
             <Sparkles size={20} className="inline mr-2 animate-pulse text-blue-400" />
-            Ask me anything about your Jira tickets...
+            Use Slack/Gmail/Jira/Calendar from a single place.
           </div>
         )}
-
+ 
         {messages.map((message) => (
           <div
             key={message.id}
@@ -141,7 +118,7 @@ const Agents: React.FC = () => {
                 <Bot size={18} className="text-white" />
               </div>
             )}
-
+ 
             <div
               className={`
                 max-w-[75%] px-5 py-3 rounded-2xl shadow
@@ -156,9 +133,9 @@ const Agents: React.FC = () => {
                 }
               `}
             >
-              <ReactMarkdown className="text-base whitespace-pre-wrap">{message.content}</ReactMarkdown>
+              <p className="text-base whitespace-pre-wrap">{message.content}</p>
             </div>
-
+ 
             {message.sender === 'user' && (
               <div className={`w-9 h-9 rounded-full ${isDark ? 'bg-gray-700' : 'bg-blue-200'} flex items-center justify-center flex-shrink-0 shadow-md`}>
                 <User size={18} className="text-blue-500" />
@@ -166,7 +143,7 @@ const Agents: React.FC = () => {
             )}
           </div>
         ))}
-
+ 
         {loading && (
           <div className="flex gap-3 justify-start">
             <div className={`w-9 h-9 rounded-full ${isDark ? 'bg-blue-700' : 'bg-blue-500'} flex items-center justify-center flex-shrink-0 shadow-md`}>
@@ -181,16 +158,16 @@ const Agents: React.FC = () => {
             </div>
           </div>
         )}
-
+ 
         <div ref={messagesEndRef} />
       </div>
-
+ 
       {/* Input */}
       <div className={`p-5 border-t ${isDark ? 'border-gray-700' : 'border-blue-200'} bg-transparent`}>
         <div className="flex gap-3">
           <input
             type="text"
-            placeholder="Ask me about Jira tickets..."
+            placeholder="Type your message..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -218,5 +195,5 @@ const Agents: React.FC = () => {
     </div>
   );
 };
-
-export default Agents;
+ 
+export default AgentChatbot;

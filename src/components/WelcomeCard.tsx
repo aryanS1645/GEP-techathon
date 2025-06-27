@@ -57,7 +57,7 @@ const WelcomeCard: React.FC = () => {
             </li>
             <li className="flex items-center gap-2">
               <FileText size={18} className="text-yellow-400" />
-              <span><strong>Agents:</strong> Assistant Chatbots</span>
+              <span><strong>Agents:</strong> Assistant Chatbot</span>
             </li>
             <li className="flex items-center gap-2">
               <CheckCircle size={18} className="text-green-400" />
