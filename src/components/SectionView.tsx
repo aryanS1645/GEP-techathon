@@ -4,12 +4,9 @@ import { fetchDailySummary } from '../services/api';
 import ModeSelector from './ModeSelector';
 import ScheduleSelector from './ScheduleSelector';
 import SummaryCard from './SummaryCard';
-import JiraChatbot from './JiraChatbot';
+import AgentChatbot from './AgentChatbot';
 import WelcomeCard from './WelcomeCard';
-import CalendarChatbot from './CalendarChatbot';
-import EmailChatbot from './EmailChatbot';
 import TodoList from './TodoList';
-import SlackChatbot from './SlackChatbot';
 
 interface SectionViewProps {
   section: string;
@@ -52,7 +49,7 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
       case 'email': return 'Email Summary';
       case 'calendar': return 'Calendar Summary';
       case 'teams': return 'Slack Summary';
-      case 'jira': return 'Jira Assistant';
+      case 'agent': return 'AgentChatbot';
       case 'todo': return 'Todo List';
       default: return 'Dashboard';
     }
@@ -107,19 +104,10 @@ const SectionView: React.FC<SectionViewProps> = ({ section }) => {
     return <WelcomeCard />;
   }
 
-  if (section === 'jira') {
-    return <JiraChatbot />;
+  if (section === 'agent') {
+    return <AgentChatbot />;
   }
 
-  if (section === 'calendarbot') {
-  return <CalendarChatbot />;
-}
-if (section === 'emailbot') {
-  return <EmailChatbot />;
-}
-if (section === 'slackbot') {
-  return <SlackChatbot />;
-}
 
 if (section === 'todo') {
   let todoItems: any[] = [];
